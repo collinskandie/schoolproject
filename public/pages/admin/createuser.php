@@ -37,7 +37,8 @@
         display: block;
         width: 100%;
         padding: 10px;
-        background-color: #000;;
+        background-color: #000;
+        ;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -50,13 +51,29 @@
     }
 </style>
 <?php
+
 include('adminmaster.php');
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = strtolower(trim($_POST['email']));
+    $password = $_POST['password'];
+    $name = $_POST['username'];
+    $phone = $_POST['phone'];
+    $role = $_POST['role'];
+    // $new_password = md5($password . $email);
+    $result = $users->insertUser($email, $password, $name, $phone, $role);
+    if (!$result) {
+        echo ("<script>alert('Error adding user');</script>");
+    } else {
+        echo ("<script>alert('Successfully added user');</script>");
+        header('Location: user.php');
+    }
+}
 ?>
 <br>
-<form>
+<form action="" method="POST">
     <h2>Add User</h2>
     <div>
-        <label for="username">Username:</label>
+        <label for="username">Full Name</label>
         <input type="text" id="username" name="username" required>
     </div>
     <div>

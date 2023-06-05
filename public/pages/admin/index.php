@@ -6,9 +6,10 @@ include('./adminmaster.php');
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <!-- Link to CSS stylesheets and JavaScript files -->
-    <link rel="stylesheet" href="../../public/static/css/newcustom.css">
+    <link rel="stylesheet" href="../../static/css/newcustom.css">
 </head>
 <main>
+    <h4>Welcome <?= $name ?> </h4>
     <h5>Todays Summary </h5>
     <div class="card-container">
         <div class="card">

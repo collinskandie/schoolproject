@@ -1,29 +1,26 @@
 </html>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>Client Dashboard</title>
     <!-- Link to CSS stylesheets and JavaScript files -->
-    <link rel="stylesheet" href="../../public/static/css/admin.css">
-    <link rel="stylesheet" href="../../public/static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/admin.css">
+    <link rel="stylesheet" href="../../static/css/index.css">
 </head>
 
 <body>
     <header>
         <!-- Your header content goes here -->
-        <h1>Admin Dashboard</h1>
+        <h1>Dashboard</h1>
         <div class="logo">
-            <img src="../../public/static/images/logo.png" alt="Logo">
+            <img src="../../static/images/logo.png" alt="Logo">
         </div>
         <nav>
             <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Users</a></li>
-                <li><a href="#">Orders</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="index.php">Sale</a></li>
+                <li><a href="cashout.php">Cashout</a></li>
+                
             </ul>
         </nav>
     </header>
@@ -35,5 +32,4 @@
             <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kandie.</a> All rights reserved.</p>
         </footer>
 </body>
-
 </html>
