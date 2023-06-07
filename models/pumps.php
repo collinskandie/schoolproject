@@ -36,7 +36,7 @@ class pumps
     public function fuelTypes()
     {
         try {
-            $sql = "SELECT * FROM fuel_types";
+            $sql = "SELECT f.*, i.price FROM fuel_types f INNER JOIN inventory i ON f.id = i.fuel_type";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows
@@ -45,5 +45,14 @@ class pumps
             echo $error->getmessage();
             return false;
         }
+    }
+    public function fuelPrices($fuel)
+    {
+        $sql = "SELECT * FROM inventory WHERE fuel_type=:fuel_type";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':fuel_type', $fuel);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result;
     }
 }

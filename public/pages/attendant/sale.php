@@ -45,7 +45,8 @@ include('master.php');
     }
 
     .fuel-type {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        max-width: 100%;
     }
 
     .form-group {
@@ -60,6 +61,7 @@ include('master.php');
     }
 
     .form-group select,
+    .form-group input[type="select"],
     .form-group input[type="number"] {
         flex: 1;
         padding: 5px;
@@ -98,75 +100,57 @@ $id = $_GET['pump'];
 $fuel_types = $pumps->fuelTypes();
 ?>
 <div class="container">
-    <div class="pump-details">
-        <img src="../../static/images/gas.jpg" alt="Gas Pump 1">
-        <h3>Pump <?= $id; ?> </h3>
-    </div>
-    <div class="fuel-type">
-        <label for="fuel-type">Fuel Type:</label>
-        <select id="fuel-type">
-            <?php
-            if (count($fuel_types) > 0) {
-                foreach ($fuel_types as $row) {
-            ?>
-                    <option value="<?= $row['id']; ?>"><?= $row['name']; ?></option>
-            <?php
-                }
-            }
-            ?>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="litres">Number of Litres:</label>
-        <input type="number" id="litres" min="0" step="0.01">
-    </div>
-    <div class="form-group">
-        <label for="total-price">Total Price:</label>
-        <input type="number" id="total-price" min="0" step="0.01" readonly>
-    </div>
-    <div class="total-price">
-        <strong>Total Price:</strong> KSH <span id="display-price">0.00</span>
-    </div>
-    <div class="payment-button">
-        <button id="payment-button">Make Payment</button>
-    </div>
+    <form action="payment.php" method="POST">
+        <div class="pump-details">
+            <img src="../../static/images/gas.jpg" alt="Gas Pump <?= $id; ?>">
+            <h3>Pump <?= $id; ?> </h3>
+            <input type="number" name="pump" value="<?= $id; ?>" hidden>
+        </div>
+        <div class="form-group">
+            <div class="fuel-type">
+                <label for="fuel-type">Fuel Type:</label>
+                <select type="select" min="0" step="0.01" id="fuel-type" name="fueltype" style="max-width: 1000px;">
+                    <?php
+                    if (count($fuel_types) > 0) {
+                        foreach ($fuel_types as $row) {
+                    ?>
+                            <option value="<?= $row['id']; ?>" data-price="<?= $row['price']; ?>"><?= $row['name']; ?></option>
+                    <?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="litres">Number of Litres:</label>
+            <input type="number" id="litres" name="quantity" min="0" step="0.01" oninput="calculateTotalPrice()">
+        </div>
+
+        <div class="form-group">
+            <label for="total-price">Total Price:</label>
+            <input type="number" name="total" id="total-price" min="0" step="0.01" readonly>
+        </div>
+
+        <div class="total-price">
+            <strong>Total Price:</strong> KSH <span id="display-price">0.00</span>
+        </div>
+        <div class="payment-button">
+            <button type="submit" id="payment-button">Make Payment</button>
+        </div>
+
+    </form>
 </div>
-
 <script>
-    // Calculate and update the total price based on liters entered
-    const litresInput = document.getElementById('litres');
-    const totalPriceInput = document.getElementById('total-price');
-    const displayPrice = document.getElementById('display-price');
+    function calculateTotalPrice() {
+        var fuelTypeSelect = document.getElementById("fuel-type");
+        var fuelPrice = parseFloat(fuelTypeSelect.options[fuelTypeSelect.selectedIndex].getAttribute("data-price"));
+        var litres = parseFloat(document.getElementById("litres").value);
 
-    litresInput.addEventListener('input', () => {
-        const litres = litresInput.value;
-        const fuelType = document.getElementById('fuel-type').value;
-        const fuelPricePerLitre = getFuelPrice(fuelType);
-        const totalPrice = litres * fuelPricePerLitre;
-        totalPriceInput.value = totalPrice.toFixed(2);
-        displayPrice.textContent = totalPrice.toFixed(2);
-    });
-
-    // Retrieve fuel price based on selected fuel type
-    function getFuelPrice(fuelType) {
-        // Add your logic here to retrieve the fuel price based on the selected fuel type
-        // For demonstration purposes, a sample price is used
-        const fuelPrices = {
-            petrol: 1.3,
-            diesel: 1.2,
-            gasoline: 1.5
-        };
-        return fuelPrices[fuelType] || 0;
+        if (!isNaN(fuelPrice) && !isNaN(litres)) {
+            var totalPrice = fuelPrice * litres;
+            document.getElementById("total-price").value = totalPrice.toFixed(2);
+            document.getElementById("display-price").innerText = totalPrice.toFixed(2);
+        }
     }
-
-    // Handle payment button click
-    const paymentButton = document.getElementById('payment-button');
-    paymentButton.addEventListener('click', () => {
-        const litres = litresInput.value;
-        const totalPrice = totalPriceInput.value;
-        const fuelType = document.getElementById('fuel-type').value;
-
-        // Add your payment processing logic here
-        alert(`Fuel Type: ${fuelType}\nLitres: ${litres}\nTotal Price: $${totalPrice}`);
-    });
 </script>
