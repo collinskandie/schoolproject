@@ -27,8 +27,20 @@ $result = $users->getAllUsers();
         background-color: #4CAF50;
         color: white;
     }
+
+    .button {
+        border-radius: 10px;
+
+        padding: 10px;
+        background-color: #f79974;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
 </style>
 <main>
+    <button class="button" onclick="window.location.href = 'createuser.php'">Add User</button>
+    <hr>
     <table>
         <thead>
             <tr>

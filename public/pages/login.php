@@ -1,10 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
     <title>Login Page</title>
-    <link rel="stylesheet" href="../static/css/login.css">
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Desktop styles */
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+        }
+
+        .form-container {
+            flex: 1;
+            padding: 20px;
+            height: 100vh;
+            margin-left: 50px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="password"] {
+            border-radius: 10px;
+            width: 60%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-container input[type="submit"] {
+            border-radius: 10px;
+            width: 64%;
+            padding: 10px;
+            background-color: #f79974;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .image-container {
+            flex: 1.5;
+            height: 100%;
+            background-image: url("../../public/static/images/loginimage.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .logo {
+            margin-top: 100px;
+            margin-bottom: 100px;
+            margin-left: 100px;
+        }
+
+        .logo img {
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        /* Mobile styles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                flex-direction: row;
+            }
+
+            .form-container {
+                margin-bottom: 20px;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -15,41 +93,50 @@
         $password = $_POST['password'];
         $new_password = md5($password . $email);
         $result = $users->userLogin($email, $new_password);
-
         if (!$result) {
-            echo '<script>alert("Incorrect password or email")</script>';
+            echo ('<script>
+            alert("Incorrect password or email");
+          </script>');
         } else {
             session_start();
             $_SESSION['email'] = $email;
-            $_SESSION['id'] = $result['id'];
+            $_SESSION['id'] =
+                $result['id'];
             $_SESSION['role'] = $result['role'];
-
-            if ($result['role'] == 'admin') {
+            if (
+                $result['role'] ==
+                'admin'
+            ) {
+                echo ('<script>
+                alert("Login success,Welcome to admin page");
+              </script>');
                 header("Location: ./admin/index.php");
-            } elseif ($result['role'] == 'web_user') {
+            } elseif (
+                $result['role']
+                == 'attendant'
+            ) {
+                echo ('<script>
+                alert("Login success,Welcome");
+              </script>');
                 header("Location: ./attendant/index.php");
             }
         }
-    }
-    ?>
+    } ?>
     <div class="container">
-        <div class="logo">
-            <img src="../static/images/logo.png" alt="Logo">
+        <div class="form-container">
+            <div class="logo">
+                <img src="../../public/static/images/logo.png" alt="Logo" />
+            </div>
+            <h2>Login</h2>
+            <form action="login.php" method="POST">
+                <input type="text" id="email" name="email" placeholder="Email" required />
+                <input type="password" id="password" name="password" placeholder="Password" required />
+                <input type="submit" value="Login" />
+            </form>
         </div>
-        <form class="login-form" action="login.php" method="POST">
-            <h1>Login</h1>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        <div class="image-container">
+        </div>
     </div>
-
 </body>
 
 </html>
