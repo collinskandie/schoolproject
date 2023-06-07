@@ -1,4 +1,5 @@
 <?php
+$title = "Dashboard";
 include('master.php');
 ?>
 <style>
@@ -23,9 +24,9 @@ include('master.php');
     }
 
     .option {
-        background-color: #4CAF50;
+        background-color: #f79974;
         border-radius: 8px;
-        color: #fff;
+        color: white;
         cursor: pointer;
         font-size: 18px;
         margin: 10px;
@@ -35,8 +36,17 @@ include('master.php');
         transition: background-color 0.3s ease;
     }
 
-    .option:hover {
+    /* .option:hover {
         background-color: #45a049;
+    } */
+    .button {
+        border-radius: 10px;
+        width: 64%;
+        padding: 10px;
+        background-color: #f79974;
+        color: white;
+        border: none;
+        cursor: pointer;
     }
 </style>
 <div class="container">

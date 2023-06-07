@@ -24,7 +24,16 @@
         <br>
         <br>
         <?php
+        require_once("../models/dbcon.php");
         session_start();
+        $action = "Logout";
+        $actionby = $_SESSION['id'];
+        $actionDate = date("Y-m-d");
+        $actionTime = date("H:i:s");
+        $category = "Authentication";
+        $actionTable = "Users";
+        $user_role = $_SESSION['role'];
+        $users->logAction($action, $actionby, $actionDate, $actionTime, $category, $actionTable, $user_role);
         echo ("Logout page");
         session_destroy();
         // header('Location: index.php');

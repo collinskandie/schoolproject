@@ -6,6 +6,25 @@ class users
     {
         $this->db = $conn;
     }
+    public function logAction($action, $actionby, $actionDate, $actionTime, $category, $actionTable, $user_role)
+    {
+        try {
+            $sql = "INSERT INTO logs (actions, actionby, actiondate, actiontime, category, actiontable, user_role) VALUES (:actions, :actionby, :actiondate, :actiontime, :category, :actiontable, :user_role)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':actions', $action);
+            $stmt->bindparam(':actionby', $actionby);
+            $stmt->bindparam(':actiondate', $actionDate);
+            $stmt->bindparam(':actiontime', $actionTime);
+            $stmt->bindparam(':category', $category);
+            $stmt->bindparam(':actiontable', $actionTable);
+            $stmt->bindparam(':user_role', $user_role);
+            $stmt->execute();
+            return $stmt;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
     public function insertUser($email, $password, $username, $phone, $role)
     {
         try {

@@ -17,7 +17,9 @@ try {
 require_once 'sales.php';
 require_once 'users.php';
 require_once 'reports.php';
+require_once 'pumps.php';
 $sales = new sales($pdo);
+$pumps = new pumps($pdo);
 $users = new users($pdo);
 $reports = new reports($pdo);
 // $users->insertUser("admin@gmail.com", "password");

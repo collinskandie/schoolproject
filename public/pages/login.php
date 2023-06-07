@@ -87,6 +87,17 @@
 
 <body>
     <?php
+    session_start();
+    if (isset($_SESSION['id'])) {
+        echo ('404 error! You have an exhisting session my guy!');
+        if ($_SESSION['role'] == "admin") {
+
+            header('Location: ./admin/index.php');
+        } else {
+            header('Location: ./attendant/index.php');
+        }
+        exit();
+    }
     require_once("../../models/dbcon.php");
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
@@ -98,10 +109,8 @@
             alert("Incorrect password or email");
           </script>');
         } else {
-            session_start();
             $_SESSION['email'] = $email;
-            $_SESSION['id'] =
-                $result['id'];
+            $_SESSION['id'] = $result['id'];
             $_SESSION['role'] = $result['role'];
             if (
                 $result['role'] ==
@@ -120,6 +129,14 @@
               </script>');
                 header("Location: ./attendant/index.php");
             }
+            $action = "Login";
+            $actionby = $result['id'];
+            $actionDate = date("Y-m-d");
+            $actionTime = date("H:i:s");
+            $category = "Authentication";
+            $actionTable = "Users";
+            $user_role = $result['role'];
+            $users->logAction($action, $actionby, $actionDate, $actionTime, $category, $actionTable, $user_role);
         }
     } ?>
     <div class="container">

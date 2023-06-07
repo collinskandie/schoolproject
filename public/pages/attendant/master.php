@@ -11,8 +11,6 @@ require_once("../../../models/dbcon.php");
 $result = $users->getUserByEmail($userEmail);
 $name = $result['username'];
 ?>
-
-
 <head>
     <meta charset="UTF-8">
     <title>Client Dashboard</title>
@@ -24,7 +22,7 @@ $name = $result['username'];
 <body>
     <header>
         <!-- Your header content goes here -->
-        <h1>Dashboard</h1>
+        <h1><?= $title ?></h1>
         <div class="logo">
             <img src="../../static/images/logo.png" alt="Logo">
         </div>
