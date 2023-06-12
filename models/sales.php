@@ -45,4 +45,24 @@ class sales
             return false;
         }
     }
+    public function unCleared($user)
+    {
+        try {
+            $state = "Pending";
+            $sql = "SELECT p.*, s.total, s.pump_id, s.time_sold, i.name 
+                FROM payments p 
+                JOIN sales s ON p.receipt_number = s.id 
+                JOIN inventory i ON s.item_id = i.id 
+                WHERE p.cleared = :cleared AND p.user = :user";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':cleared', $state);
+            $stmt->bindParam(':user', $user);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->fetchAll(); // Fetch all rows as an array
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
 }
