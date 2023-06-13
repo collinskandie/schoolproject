@@ -4,32 +4,26 @@
 <head>
     <title>Login Page</title>
     <style>
-        /* Global styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-
-        /* Desktop styles */
         .container {
             display: flex;
             align-items: center;
             justify-content: space-between;
             height: 100vh;
         }
-
         .form-container {
             flex: 1;
             padding: 20px;
             height: 100vh;
             margin-left: 50px;
         }
-
         .form-container h2 {
             margin-bottom: 20px;
         }
-
         .form-container input[type="text"],
         .form-container input[type="password"] {
             border-radius: 10px;
@@ -37,7 +31,6 @@
             padding: 10px;
             margin-bottom: 10px;
         }
-
         .form-container input[type="submit"] {
             border-radius: 10px;
             width: 64%;
@@ -47,7 +40,6 @@
             border: none;
             cursor: pointer;
         }
-
         .image-container {
             flex: 1.5;
             height: 100%;
@@ -56,28 +48,22 @@
             background-repeat: no-repeat;
             background-position: center;
         }
-
         .logo {
             margin-top: 100px;
             margin-bottom: 100px;
             margin-left: 100px;
         }
-
         .logo img {
             max-height: 300px;
             object-fit: contain;
         }
-
-        /* Mobile styles */
         @media only screen and (max-width: 600px) {
             .container {
                 flex-direction: row;
             }
-
             .form-container {
                 margin-bottom: 20px;
             }
-
             .image-container {
                 height: 200px;
             }
@@ -134,6 +120,7 @@
             $actionDate = date("Y-m-d");
             $actionTime = date("H:i:s");
             $category = "Authentication";
+            
             $actionTable = "Users";
             $user_role = $result['role'];
             $users->logAction($action, $actionby, $actionDate, $actionTime, $category, $actionTable, $user_role);

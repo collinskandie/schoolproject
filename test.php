@@ -4,14 +4,12 @@
 <head>
   <title>Login Page</title>
   <style>
-    /* Global styles */
+   
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-    }
-
-    /* Desktop styles */
+    }    
     .container {
       display: flex;
       align-items: center;
@@ -68,7 +66,7 @@
       object-fit: contain;
     }
 
-    /* Mobile styles */
+    /* Mobile view styles */
     @media only screen and (max-width: 600px) {
       .container {
         flex-direction: row;
@@ -84,7 +82,6 @@
     }
   </style>
 </head>
-
 <body>
   <?php
   require_once("../../models/dbcon.php");
