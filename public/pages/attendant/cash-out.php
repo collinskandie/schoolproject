@@ -6,10 +6,10 @@ $user = $_SESSION['id'];
 // $result = $sales->unCleared($user);
 ?>
 <style>
-    body {
+    /* body {
         font-family: Arial, sans-serif;
         margin: 20px;
-    }
+    } */
 
     h1 {
         text-align: center;
@@ -45,6 +45,23 @@ $user = $_SESSION['id'];
         background-color: #fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
+        margin: 20px;
+        height: 100vh;
+    }
+
+    .container {
+        flex-direction: column;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        margin: 20px;
+        /* height: 100vh; */
+    }
+
+    #record-table {
+        /* margin-top: 20px; */
+        margin: 20px;
+
     }
 </style>
 <h1>Records Table</h1>
@@ -57,40 +74,58 @@ $user = $_SESSION['id'];
                 <th>Receipt Number</th>
                 <th>Payment Method</th>
                 <th>Receipt Total</th>
-                <th>Cleared</th>
-                <th>User</th>
+                <th>Status</th>
+                <th>Clear</th>
+
             </tr>
         </thead>
         <tbody>
             <?php
-
             $result = $sales->unCleared($user);
+            $total = 0;
+            $cash = 0;
+            $mpesa = 0;
+            $pdq = 0;
 
             foreach ($result as $row) {
+                $total += $row['total'];
+                if ($row['payment_method'] == 'cash') {
+                    $cash += $row['total'];
+                }
+                if ($row['payment_method'] == 'mpesa') {
+                    $mpesa += $row['total'];
+                }
+                if ($row['payment_method'] == 'pdq') {
+                    $mpesa += $row['total'];
+                }
             ?>
                 <tr>
-                    <td><?= $row['id'] ?></td>
+                    <td><?= $row['pid'] ?></td>
                     <td><?= $row['receipt_number'] ?></td>
                     <td><?= $row['payment_method'] ?></td>
                     <td class="amount"><?= $row['total'] ?></td>
                     <td><?= $row['cleared'] ?></td>
-                    <td><?= $row['user'] ?></td>
+                    <td>
+                        <input type="checkbox" name="selected[]" value="<?= $row['pid'] ?>">
+                    </td>
                 </tr>
             <?php
-            }
-
-            ?>
+            } ?>
 
         <tfoot>
             <tr>
-                <td colspan="3">Total:</td>
-                <td id="total-amount-tendered"></td>
-                <td id="total-change-amount"></td>
-                <td></td>
-                <td></td>
+                <td>Total:</td>
+                <td id="total-amount-tendered" colspan="5"> <strong><?= $total; ?></td>
             </tr>
         </tfoot>
     </table>
+    <div class="container-2">
+        Expected cash: <?= $cash ?>
+        <br>
+        Expected Mpesa: <?= $mpesa ?>
+        <br>
+        Expected PDQ: <?= $pdq ?>
+    </div>
 </div>
 
 <script>

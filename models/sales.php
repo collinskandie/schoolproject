@@ -49,11 +49,7 @@ class sales
     {
         try {
             $state = "Pending";
-            $sql = "SELECT p.*, s.total, s.pump_id, s.time_sold, i.name 
-                FROM payments p 
-                JOIN sales s ON p.receipt_number = s.id 
-                JOIN inventory i ON s.item_id = i.id 
-                WHERE p.cleared = :cleared AND p.user = :user";
+            $sql = "SELECT p.id as pid, p.*, s.*, i.* FROM payments p JOIN sales s ON p.receipt_number = s.id JOIN inventory i ON s.item_id = i.id WHERE p.cleared = :cleared AND p.user = :user";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':cleared', $state);
             $stmt->bindParam(':user', $user);
