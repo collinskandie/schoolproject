@@ -11,6 +11,7 @@ require_once("../../../models/dbcon.php");
 $result = $users->getUserByEmail($userEmail);
 $name = $result['username'];
 ?>
+
 <head>
     <meta charset="UTF-8">
     <title>Client Dashboard</title>
@@ -30,7 +31,7 @@ $name = $result['username'];
             <ul>
                 <li>Welcome <?= $name ?></a></li>
                 <li><a href="index.php">Sale</a></li>
-                <li><a href="cashout.php">Cashout</a></li>
+                <li><a href="cash-out.php">Cashout</a></li>
                 <li><a href="../../../controllers/logout.php">Logout</a></li>
 
             </ul>

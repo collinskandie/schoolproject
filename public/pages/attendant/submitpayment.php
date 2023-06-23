@@ -28,9 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($result) {
         $receipt = $result;
-        $success = $sales->savePayment($receipt, $payment, $tendered, $change);
+        $success = $sales->savePayment($receipt, $payment, $tendered, $change, $user);
         if ($success) {
-            echo ("Sale successfull");
+            echo ("<script> alert('Sale successfull');</script>");
+            header("Location: ./make-sale.php");
         }
     }
 }

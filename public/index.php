@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Kerarpon Fuel Attendant</title>
@@ -8,9 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="./static/css/index.css" rel="stylesheet">
 </head>
+
 <body>
     <?php
-    include("../controllers/session.php");  
+    include("../controllers/session.php");
+    if ($_SESSION['role'] == 'attendant') {
+        echo ('<script>
+        alert("Login success,Welcome");
+      </script>');
+        header("Location: ./pages/attendant/index.php");
+    } elseif (
+        $result['role'] ==
+        'admin'
+    ) {
+        echo ('<script>
+        alert("Login success,Welcome to admin page");
+      </script>');
+        header("Location: ./pages/admin/index.php");
+    }
 
     ?>
     <header>
@@ -19,7 +35,7 @@
                 <div class="logo">
                     <img src="./static/images/logo.png" alt="Shell Kerarapon">
                 </div>
-                <h1>Shell Kerarapon System</h1>                
+                <h1>Shell Kerarapon System</h1>
                 <div class="user-info">
                     <span class="username">Welcome, Jane Doe</span>
                     <button class="logout-button">Logout</button>
@@ -29,22 +45,8 @@
         </div>
     </header>
     <main>
-       
-        <section onclick="location.href='/sales';" style="margin-top: 30px;">
-            <i class="fas fa-cash-register"></i>
-            <h2>Make a Sale</h2>
-            <p>Record a new sale transaction and update inventory.</p>
-        </section>
-        <section onclick="location.href='/sales';">
-            <i class="fas fa-cash-register"></i>
-            <h2>Check Out</h2>
-            <p>Make cash deposit</p>
-        </section>
-        <section onclick="location.href='/maintenance';">
-            <i class="fas fa-toolbox"></i>
-            <h2>Request Maintenance</h2>
-            <p>Report any issues with pumps, tanks, or equipment.</p>
-        </section>
+
+
     </main>
     <footer>
         <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kandie.</a> All rights reserved.</p>

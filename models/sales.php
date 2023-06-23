@@ -29,15 +29,18 @@ class sales
             return false;
         }
     }
-    public function savePayment($receipt_number, $payment_method, $amount_tendered, $change_amount)
+    public function savePayment($receipt_number, $payment_method, $amount_tendered, $change_amount, $user)
     {
         try {
-            $sql = "INSERT INTO payments (receipt_number, payment_method, amount_tendered, change_amount) VALUES (:receipt_number, :payment_method, :amount_tendered, :change_amount)";
+            // $cleared= "Pending";
+            $sql = "INSERT INTO payments (receipt_number, payment_method, amount_tendered, change_amount, user) VALUES (:receipt_number, :payment_method, :amount_tendered, :change_amount,:user)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':receipt_number', $receipt_number);
             $stmt->bindparam(':payment_method', $payment_method);
             $stmt->bindparam(':amount_tendered', $amount_tendered);
             $stmt->bindparam(':change_amount', $change_amount);
+            // $stmt->bindparam(':cleared', $cleared);
+            $stmt->bindparam(':user', $user);
             $stmt->execute();
             return $stmt;
         } catch (PDOException $error) {
@@ -55,6 +58,64 @@ class sales
             $stmt->bindParam(':user', $user);
             $stmt->execute(); // Execute the query
             $result = $stmt->fetchAll(); // Fetch all rows as an array
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function clearSale($receipts_id, $cleared_time, $total_expected, $total_cleared, $variance, $userid)
+    {
+        try {
+            //change sale status to cleared first.
+            //records transaction.
+            $sql = "INSERT INTO sales_clearance (receipts_id, cleared_time, total_expected, total_cleared, variance, userid) VALUES(:receipts_id, :cleared_time, :total_expected, :total_cleared, :variance, :userid)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':receipts_id', $receipts_id);
+            $stmt->bindparam(':cleared_time', $cleared_time);
+            $stmt->bindparam(':total_expected', $total_expected);
+            $stmt->bindparam(':total_cleared', $total_cleared);
+            $stmt->bindparam(':variance', $variance);
+            $stmt->bindparam(':userid', $userid);
+            $stmt->execute();
+            $lastInsertedId = $this->db->lastInsertId();
+
+            // $this->ClearEntry($selectedReceiptIds);
+
+            return $lastInsertedId;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function ClearEntry($selectedReceiptIds)
+    {
+        try {
+            foreach ($selectedReceiptIds as $receiptId) {
+                $sql = "UPDATE payments SET cleared = 'Cleared' WHERE receipt_number = :receiptId";
+                // Prepare and execute the SQL statement
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(':receiptId', $receiptId);
+                $stmt->execute();
+            }
+
+            return true; // Moved outside the foreach loop
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    //select payments to display to the user
+    public function salesperPerson($userid, $date)
+    {
+        try {
+            $sql = "SELECT * FROM sales where salesperson_id= :user AND date_sold = :date_sold ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':user', $userid);
+            $stmt->bindParam(':date_sold', $date);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->fetchAll();
+            // var_dump($result);
             return $result;
         } catch (PDOException $error) {
             echo $error->getMessage();
