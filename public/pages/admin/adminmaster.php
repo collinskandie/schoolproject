@@ -1,3 +1,9 @@
+<?php
+session_start();
+$userEmail = $_SESSION['email'];
+$userID = $_SESSION['id'];
+?>
+
 </html>
 <!DOCTYPE html>
 <html>
@@ -5,16 +11,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
-    <!-- Link to CSS stylesheets and JavaScript files -->
     <link rel="stylesheet" href="../../static/css/admin.css">
     <link rel="stylesheet" href="../../static/css/index.css">
+    <style>
+        .sidenav {
+            margin-top: 110px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #ebe0d1;
+            padding-top: 20px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            width: 250px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidenav a {
+            display: block;
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+        }
+
+        .sidenav a:hover {
+            background-color: #111;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 16px;
+            background-color: #f1f1f1;
+        }
+
+        .but-menu {
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f79974;
+            color: black;
+            border: 1px solid white;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <?php
-    session_start();
-    $userEmail = $_SESSION['email'];
-    $userID = $_SESSION['id'];
     require_once("../../../models/dbcon.php");
     //find user details
     $result = $users->getUserByEmail($userEmail);
@@ -22,7 +68,7 @@
     ?>
     <header>
         <!-- Your header content goes here -->
-        <h1>Admin Dashboard</h1>
+        <h1><?= $pagename ?></h1>
         <div class="logo">
             <img src="../../static/images/logo.png" alt="Logo">
         </div>
@@ -36,14 +82,23 @@
                 <li><a href="../../../controllers/logout.php">Logout</a></li>
             </ul>
         </nav>
-    </header>
 
-    <div class="wrapper">
-        <!-- //page content here  -->
-        <footer>
-            <!-- Your footer content goes here -->
-            <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kandie.</a> All rights reserved.</p>
-        </footer>
+    </header>
+    <div class="sidenav">
+        <a class="but-menu" href="index.php">Dashboard</a>
+        <a class="but-menu" href="recieve.php">Receive</a>
+        <a class="but-menu" href="managepumps.php">Manage Pumps</a>
+        <a class="but-menu" href="managefuels.php">Manage Fuel</a>
+        <a class="but-menu" href="stocktake.php">Stock Take</a>
+    </div>
+
+    <div class="content">
+        <div class="wrapper">
+            <!-- //page content here  -->
+            <footer>
+                <!-- Your footer content goes here -->
+                <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kandie.</a> All rights reserved.</p>
+            </footer>
 </body>
 
 </html>

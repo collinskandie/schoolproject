@@ -1,11 +1,11 @@
 <?php
+$pagename = "Admin - Dashboard";
 include('./adminmaster.php');
 ?>
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <!-- Link to CSS stylesheets and JavaScript files -->
+    <title><?= $pagename; ?></title>    
     <link rel="stylesheet" href="../../static/css/newcustom.css">
 </head>
 <main>
@@ -48,6 +48,6 @@ include('./adminmaster.php');
         </div>
     </div>
 
-  
+
 
 </main>
