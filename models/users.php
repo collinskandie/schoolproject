@@ -51,12 +51,53 @@ class users
             return false;
         }
     }
+    function updateUser($email, $username, $phone, $role)
+    {
+        $sql = "UPDATE users SET username = :username, phone = :phone, role = :role WHERE email = :email";
+        $stmt = $this->db->prepare($sql);
+        //bind params
+        $stmt->bindparam(':username', $username);
+        $stmt->bindparam(':email', $email);
+        $stmt->bindparam(':phone', $phone);
+
+        $stmt->bindparam(':role', $role);
+        $stmt->execute();
+        return $stmt;
+    }
+    public function deleteUser($id)
+    {
+        // Remove the association between sales and the user being deleted
+        $sql = "UPDATE sales SET salesperson_id = NULL WHERE salesperson_id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        $sql = "DELETE FROM users where id=:id";
+        $smt = $this->db->prepare($sql);
+        $smt->bindparam(':id', $id);
+        $smt->execute();
+        return $smt;
+    }
     public function getUserByEmail($email)
     {
         try {
             $sql = "SELECT * FROM users where email=:email";
             $smt = $this->db->prepare($sql);
             $smt->bindparam(':email', $email);
+            $smt->execute();
+            $result = $smt->fetch();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
+    public function getUserById($id)
+    {
+        try {
+            $sql = "SELECT * FROM users where id=:id";
+            $smt = $this->db->prepare($sql);
+            $smt->bindparam(':id', $id);
             $smt->execute();
             $result = $smt->fetch();
             return $result;
