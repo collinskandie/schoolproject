@@ -25,6 +25,20 @@ class users
             return false;
         }
     }
+    public function getLogs()
+    {
+        try {
+            $sql = "SELECT * FROM logs";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows
+            return $result;
+            //get logs
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
     public function insertUser($email, $password, $username, $phone, $role)
     {
         try {
@@ -71,7 +85,7 @@ class users
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        
+
         $sql = "DELETE FROM users where id=:id";
         $smt = $this->db->prepare($sql);
         $smt->bindparam(':id', $id);
