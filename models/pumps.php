@@ -55,4 +55,20 @@ class pumps
         $result = $stmt->fetch();
         return $result;
     }
+    //active pump
+    public function activePump()
+    {
+        try {
+            $sql = "SELECT p.id, p.pump_details, COUNT(*) AS entries_count FROM sales s
+                    JOIN pumps p ON s.pump_id = p.id WHERE s.date_sold = CURDATE() GROUP BY p.id, p.pump_details
+                    ORDER BY entries_count DESC LIMIT 1;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
 }

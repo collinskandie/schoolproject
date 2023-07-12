@@ -90,6 +90,7 @@ $userID = $_SESSION['id'];
         <a class="but-menu" href="managepumps.php">Manage Pumps</a>
         <a class="but-menu" href="managefuels.php">Manage Fuel</a>
         <a class="but-menu" href="stocktake.php">Stock Take</a>
+        <a class="but-menu" href="analytics.php">Analytics</a> <!-- anaalytics with graphs -->
         <a class="but-menu" href="logs.php">User Logs</a>
     </div>
 

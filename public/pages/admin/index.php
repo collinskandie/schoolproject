@@ -5,7 +5,7 @@ include('./adminmaster.php');
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $pagename; ?></title>    
+    <title><?= $pagename; ?></title>
     <link rel="stylesheet" href="../../static/css/newcustom.css">
 </head>
 <main>
@@ -17,15 +17,34 @@ include('./adminmaster.php');
                 Top Pump Today
             </div>
             <div class="card-body">
-                <p class="card-text">Pump 1</p>
+                <?php
+                $result = $reports->activePump();
+                // var_dump($result);
+                if (!$result) {
+                    $pump = "No data";
+                } else {
+                    $pump = $result['pump_details'];
+                }
+
+                ?>
+                <p class="card-text"><?= $pump;  ?></p>
             </div>
         </div>
         <div class="card">
+            <?php
+            $result = $reports->topAttendant();
+            // var_dump($result);
+            if (!$result) {
+                $user = "No sales data";
+            } else {
+                $user = $result['username'];
+            }
+            ?>
             <div class="card-header">
                 Top Attendant
             </div>
             <div class="card-body">
-                <p class="card-text">John Doe</p>
+                <p class="card-text"><?= $user; ?></p>
             </div>
         </div>
         <div class="card">
@@ -43,7 +62,11 @@ include('./adminmaster.php');
                 Total Day's Sales
             </div>
             <div class="card-body">
-                <p class="card-text">$10,000</p>
+                <p class="card-text">
+                    <?php
+                    $result = $reports->totalSales();
+                    ?>
+                </p>
             </div>
         </div>
     </div>
