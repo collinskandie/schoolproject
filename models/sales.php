@@ -21,9 +21,53 @@ class sales
             $stmt->bindparam(':date_sold', $date_sold);
             $stmt->execute();
 
-            $lastInsertedId = $this->db->lastInsertId(); // Retrieve the last inserted ID
+            $lastInsertedId = $this->db->lastInsertId();
+
+            //update inventory
+            $updateInventorySql = "UPDATE inventory SET quantity = quantity - :quantity, last_sold = NOW() WHERE fuel_type = :fuel_id";
+            $updateStmt = $this->db->prepare($updateInventorySql);
+            $updateTank = "UPDATE tanks SET available_quantity = available_quantity - :quantity WHERE fuel_type = :item_id";
+            $updateTstmt = $this->db->prepare($updateTank);
+
+            // Bind params for inventory table update
+            $updateStmt->bindParam(':quantity', $item_quantity);
+            $updateStmt->bindParam(':fuel_id', $item_id);
+            // Execute the statement to update the inventory
+            $updateStmt->execute();
+            // Update tanks
+            $updateTstmt->bindParam(':quantity', $item_quantity);
+            $updateTstmt->bindParam(':item_id', $item_id);
+            $updateTstmt->execute();
+
+            // Retrieve the last inserted ID
+
+            //update tanks and inventory
 
             return $lastInsertedId;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
+    public function updateStock($item, $quantity)
+    {
+        try {
+            $updateInventorySql = "UPDATE inventory SET quantity = quantity - :quantity, last_sold = NOW(), WHERE fuel_type = :fuel_id";
+            $updateStmt = $this->db->prepare($updateInventorySql);
+            $updateTank = "UPDATE tanks SET available_quantity = available_quantity - :quantity WHERE fuel_type = :item_id";
+            $updateTstmt = $this->db->prepare($updateTank);
+
+            // Bind params for inventory table update
+            $updateStmt->bindParam(':quantity', $quantity);
+            $updateStmt->bindParam(':fuel_id', $item);
+            // Execute the statement to update the inventory
+            $updateStmt->execute();
+            // Update tanks
+            $updateTstmt->bindParam(':quantity', $quantity);
+            $updateTstmt->bindParam(':item_id', $item);
+            $updateTstmt->execute();
+
+            return $updateStmt;
         } catch (PDOException $error) {
             echo $error->getmessage();
             return false;

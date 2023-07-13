@@ -51,6 +51,7 @@
     }
 </style>
 <?php
+$pagename = "Admin - Create user";
 
 include('adminmaster.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

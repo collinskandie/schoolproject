@@ -3,10 +3,14 @@ class purchase
 {
     // dealing with purchase orders
     private $db;
+    // Create an instance of the other class
+
     function __construct($conn)
     {
         $this->db = $conn;
+        // $users = new users;
     }
+    
     public function saveOrder($supplier, $vehicleType, $driverName, $items, $quantities, $costs, $subtotals, $user)
     {
         try {
@@ -33,6 +37,9 @@ class purchase
 
             // insert individual items to order_items table
             $save = $this->saveItem($poNumber, $items, $quantities, $costs, $subtotals, $user);
+            //update logs
+            
+            // 
             if ($save) {
                 echo "Success";
             }
@@ -76,7 +83,6 @@ class purchase
                 $stmt->bindParam(':quantity', $quantity);
                 $stmt->bindParam(':cost', $cost);
                 $stmt->bindParam(':subtotal', $subtotal);
-
                 // Execute the statement to insert the item
                 $stmt->execute();
 
