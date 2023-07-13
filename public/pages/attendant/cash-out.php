@@ -3,8 +3,9 @@ $title = "Cashout";
 include('master.php');
 $user = $_SESSION['id'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$message = isset($_GET['message']) ? $_GET['message'] : '';
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $clearedValue = $_POST['clearedValue'];
     $cleared_time = date('H:i:s');
     $tenderAmount = $_POST['tenderAmount'];
@@ -133,12 +134,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         border-radius: 5px;
     }
 </style>
-
 <div class="container">
     <br>
     <br>
     <br>
+    <?php if (!empty($message)) : ?>
+
+        <div class="message-popup">
+            <script>
+                window.onload = function() {
+                    alert('<?= $message; ?>');
+                };
+            </script>
+        </div>
+    <?php endif; ?>
+
+
+
     <?php
+    echo $message;
     $result = $sales->unCleared($user);
     if (!$result) {
         $date = date('Y-m-d');
@@ -258,7 +272,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="number" name="pdq" onchange="calculateTotal()">
                         </div>
                         <br>
-                     
+
                     </div>
                     <br>
                 </div>
@@ -284,6 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php
     } ?>
 </div>
+
 
 <script>
     let selectedTotal = 0;

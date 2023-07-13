@@ -5,7 +5,7 @@ include('./adminmaster.php');
 <style>
     /* CSS styling for the form layout */
     .form-container {
-        max-width: 600px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 20px;
     }
@@ -24,6 +24,7 @@ include('./adminmaster.php');
     }
 
     .form-group input[type="text"],
+    .form-group input[type="number"],
     .form-group select {
         width: 100%;
         padding: 8px;
@@ -39,7 +40,7 @@ include('./adminmaster.php');
 
     .table-form th,
     .table-form td {
-        padding: 8px;
+        padding: 12px;
         border: 1px solid #ccc;
     }
 
@@ -65,25 +66,33 @@ include('./adminmaster.php');
         border-radius: 4px;
         cursor: pointer;
     }
+
+    .form-header {
+        width: 100%;
+    }
 </style>
 <div class="form-container">
     <h1>Receiving Fuel Form</h1>
 
     <form action="receiveFuel.php" method="POST">
-        <div class="form-group">
-            <label for="supplier">Supplier:</label>
-            <input type="text" id="supplier" name="supplier" placeholder="Enter  Supplier name">
+        <div class="form-header">
+            <div class="form-group">
+                <label for="supplier">Supplier:</label>
+                <input type="text" id="supplier" name="supplier" placeholder="Enter  Supplier name">
+            </div>
+
+            <div class="form-group">
+                <label for="vehicle-type">Vehicle Type:</label>
+                <input type="text" id="vehicle-type" name="vehicle-type" placeholder="Enter Vehicle Type">
+            </div>
+
+            <div class="form-group">
+                <label for="driver-name">Driver Name:</label>
+                <input type="text" id="driver-name" name="driver-name" placeholder="Enter Driver Name">
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label for="vehicle-type">Vehicle Type:</label>
-            <input type="text" id="vehicle-type" name="vehicle-type" placeholder="Enter Vehicle Type">
-        </div>
-
-        <div class="form-group">
-            <label for="driver-name">Driver Name:</label>
-            <input type="text" id="driver-name" name="driver-name" placeholder="Enter Driver Name">
-        </div>
 
         <table class="table-form" id="itemsTable">
             <thead>
@@ -98,29 +107,37 @@ include('./adminmaster.php');
             <tbody id="itemsTableBody">
                 <tr>
                     <td>
-                        <select name="item[]" class="item-select" placeholder="Select Item">
-                            <option value="">Select Item</option>
-                            <?php
-                            $result = $pumps->fetchItems();
-                            foreach ($result as $row) {
-                            ?>
-                                <option value="<?= $row['id'] ?>" data-cost="<?= $row['cost']; ?>"><?= $row['name']; ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
+                        <div class="form-group">
+                            <select name="item[]" class="item-select" placeholder="Select Item">
+                                <option value="">Select Item</option>
+                                <?php
+                                $result = $pumps->fetchItems();
+                                foreach ($result as $row) {
+                                ?>
+                                    <option value="<?= $row['id'] ?>" data-cost="<?= $row['cost']; ?>"><?= $row['name']; ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
                     </td>
                     <td>
-                        <input type="number" name="quantity[]" min="0" step="0.01" value="1" placeholder="Enter Quantity">
+                        <div class="form-group">
+                            <input type="number" name="quantity[]" min="0" step="0.01" value="1" placeholder="Enter Quantity">
+                        </div>
                     </td>
                     <td>
-                        <input type="number" name="cost[]" min="0" step="0.01" value="0" placeholder="Item Cost">
+                        <div class="form-group">
+                            <input type="number" name="cost[]" min="0" step="0.01" value="0" placeholder="Item Cost">
+                        </div>
                     </td>
                     <td>
-                        <input type="number" name="sub-total[]" min="0" step="0.01" value="0" placeholder="Total" readonly>
+                        <div class="form-group">
+                            <input type="number" name="sub-total[]" min="0" step="0.01" value="0" placeholder="Total" readonly>
+                        </div>
                     </td>
                     <td>
-                        <button type="button" class="remove-row">Remove</button>
+                        <button type="button" class="remove-row button">Remove</button>
                     </td>
                 </tr>
             </tbody>
@@ -132,7 +149,7 @@ include('./adminmaster.php');
             </tfoot>
         </table>
         <div class="add-row-button">
-            <button type="button" id="addRowButton">Add Row</button>
+            <button type="button" id="addRowButton" class="button">Add Row</button>
         </div>
 
         <div class="submit-button">

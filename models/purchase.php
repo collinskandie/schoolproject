@@ -10,7 +10,7 @@ class purchase
         $this->db = $conn;
         // $users = new users;
     }
-    
+
     public function saveOrder($supplier, $vehicleType, $driverName, $items, $quantities, $costs, $subtotals, $user)
     {
         try {
@@ -32,19 +32,11 @@ class purchase
             $stmt->execute();
 
             $poNumber = $this->db->lastInsertId();
-
             //calculate cost
-
             // insert individual items to order_items table
-            $save = $this->saveItem($poNumber, $items, $quantities, $costs, $subtotals, $user);
-            //update logs
-            
-            // 
-            if ($save) {
-                echo "Success";
-            }
+            $this->saveItem($poNumber, $items, $quantities, $costs, $subtotals, $user);
             //return non-null value
-            return $stmt;
+            return $poNumber;
         } catch (PDOException $error) {
             echo $error->getmessage();
             return false;
@@ -102,6 +94,23 @@ class purchase
             }
 
             return true;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function getItems($poNumber)
+    {
+        try {
+
+            $sql = "SELECT o.*,f.* FROM order_items o 
+            JOIN fuel_types f ON f.id = o.item_id WHERE PO_number= :po;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':po', $poNumber);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
         } catch (PDOException $error) {
             echo $error->getMessage();
             return false;

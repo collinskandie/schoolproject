@@ -66,9 +66,10 @@ class reports
     }
     public function fuelCapacity()
     {
-        //get tha available quantity in the tanks. 
+        //get tha available quantity in the tanks.  
         try {
-            $sql = "SELECT tank_details, fuel_type, available_quantity, capacity, (available_quantity / capacity) * 100 AS percentage FROM tanks";
+            $sql = "SELECT t.tank_details, t.fuel_type, t.available_quantity, t.capacity, f.name, (t.available_quantity / t.capacity) * 100 AS percentage FROM tanks t
+            JOIN fuel_types f ON t.fuel_type= f.id;";
             $stmt = $this->db->query($sql);
             $result = $stmt->fetchAll();
             return $result;

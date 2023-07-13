@@ -132,7 +132,7 @@ include('./adminmaster.php');
                     ?>
                         <div class="tank-slider">
                             <div class="tank-label">
-                                Tank: <?= $capacity['tank_details'] ?> || <?= $capacity['percentage']; ?>%
+                                Tank: <?= $capacity['tank_details'] ?> || <?= $capacity['percentage']; ?>% || <?= $capacity['name']?>
                             </div>
                             <div class="tank-bar">
                                 <div class="tank-fill <?= $colorClass ?>" style="width: <?= $percentage ?>%;">

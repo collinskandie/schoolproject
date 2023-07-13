@@ -2,7 +2,6 @@
 $pagename = "Admin - Dashboard";
 include('./adminmaster.php');
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = strtolower(trim($_POST['email']));
     $name = $_POST['username'];

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $success = $sales->savePayment($receipt, $payment, $tendered, $change, $user);
         if ($success) {
             echo ("<script> alert('Sale successfull');</script>");
-            header("Location: ./make-sale.php");
+            header("Location: ./cash-out.php?message='Sale saved successfully'");
         }
     }
 }
