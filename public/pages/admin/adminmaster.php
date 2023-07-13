@@ -42,6 +42,7 @@ $userID = $_SESSION['id'];
         }
 
         .content {
+            margin-top: auto;
             margin-left: 250px;
             padding: 16px;
             background-color: #f1f1f1;

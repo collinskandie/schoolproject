@@ -64,4 +64,32 @@ class reports
             return false;
         }
     }
+    public function fuelCapacity()
+    {
+        //get tha available quantity in the tanks. 
+        try {
+            $sql = "SELECT tank_details, fuel_type, available_quantity, capacity, (available_quantity / capacity) * 100 AS percentage FROM tanks";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function salesOvertime()
+    {
+        try {
+            $currentDate = date('Y-m-d');
+            $currentDateTime = date('Y-m-d H:i:s');
+
+            $sql = "SELECT time_sold, total FROM sales WHERE date_sold = '$currentDate' AND time_sold <= '$currentDateTime' ORDER BY time_sold ASC";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
 }
