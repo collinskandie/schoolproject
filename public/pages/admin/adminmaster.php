@@ -2,15 +2,14 @@
 session_start();
 
 if (!$_SESSION['id']) {
-    //you must be logged in 
-    $userID = $_SESSION['id'];
-    $userEmail = $_SESSION['email'];
+    //you must be logged in    
     header("Location: ../login.php?error_message=" . urlencode("Youmust be logged in"));
-
-    if (!$_SESSION['role'] == 'web-user') {
+    if (!$_SESSION['role'] == 'admin') {
         header("Location: ../attendant/index.php?error_message=" . urlencode("You are not authorized to view this page"));
     }
 }
+$userID = $_SESSION['id'];
+$userEmail = $_SESSION['email'];
 
 
 ?>

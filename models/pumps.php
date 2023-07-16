@@ -159,4 +159,26 @@ class pumps
             return false;
         }
     }
+    // add new inventory item
+    public function addInventory($name, $cost, $price, $quantity, $received_by, $fuel_type)
+    {
+        $currentTimestamp = date('Y-m-d H:i:s');
+        try {
+            $sql = "INSERT INTO inventory (name, cost, price, quantity,last_received, received_by, fuel_type) 
+            VAlUES(:name, :cost, :price, :quantity,:last_received,:received_by, :fuel_type)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':cost', $cost);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':quantity', $quantity);
+            $stmt->bindParam(':last_received', $currentTimestamp);
+            $stmt->bindParam(':received_by', $received_by);
+            $stmt->bindParam(':fuel_type', $fuel_type);
+            $result = $stmt->execute();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
 }

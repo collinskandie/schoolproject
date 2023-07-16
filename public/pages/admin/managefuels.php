@@ -6,14 +6,26 @@ $result = $pumps->fetchAllItems();
 $id = $_SESSION['id'];
 $role = $_SESSION['role'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $details = strtolower(trim($_POST['details']));
-    $action = "add pump $details";
+    $inventory_name =  $_POST['inventory_name'];
+    $cost = $_POST['cost'];
+    $quantity =  $_POST['quantity'];
+    $price =  $_POST['price'];
+    $fuel_type =  $_POST['fuel_type'];
+
+
+    $action = "add inventory $inventory_name";
     $date = date('Y-m-d');
     $time = date('H:i:s');
-    $category = "pumps";
-    $actionTable =  "pumps";
+    $category = "inventory";
+    $actionTable =  "inventory";
     $users->logAction($action, $id, $date, $time, $category, $actionTable, $role);
-    $pumps->addPump($details);
+
+    $results = $pumps->addInventory($inventory_name, $cost, $price, $quantity, $id, $fuel_type);
+    if ($results) {
+        echo ("<script>alert('$inventory_name added successfully');</script>");
+    } else {
+        echo ("<script>alert('error');</script>");
+    }
 }
 ?>
 <style>
@@ -83,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <form action="" method="POST">
         <div>
             <label for="username">Name</label>
-            <input type="text" id="username" name="inventory_name" required>
+            <input type="text" id="name" name="inventory_name" required>
         </div>
         <div>
             <label for="email">Cost</label>
@@ -116,8 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
     <hr>
     <table>
-        <thead>
-            <!-- id, name, cost, price, quantity, last_sold, last_received, last_updated, updated_by, received_by, fuel_type -->
+        <thead>           
             <tr>
                 <th>Item ID</th>
                 <th>Name</th>

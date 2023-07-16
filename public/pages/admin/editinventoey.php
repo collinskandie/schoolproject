@@ -1,5 +1,5 @@
 <?php
-$pagename = "Admin - Pump Edit";
+$pagename = "Admin - Edit Inventory";
 include('./adminmaster.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
