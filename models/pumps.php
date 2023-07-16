@@ -248,4 +248,66 @@ class pumps
             return false;
         }
     }
-}
+    //create stock take entries
+    public function takeStock($ids, $names, $quantities, $counted, $user, $delta, $date, $time)
+    {
+        try {
+            // arrays ids, names,quantities, counted,delta
+            $sql = "INSERT INTO stock_take (date, time, user) 
+            VAlUES(:date, :time, :user)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':time', $time);
+            $stmt->bindParam(':user', $user);
+            $stmt->execute();
+
+            $lastInsertedId = $this->db->lastInsertId();
+
+            //create entries for each stock take item
+            if (!empty($ids) && !empty($counted) && count($ids) === count($counted)) {
+
+                for ($i = 0; $i < count($ids); $i++) {
+                    $sql = "INSERT INTO stock_take_items (item_id, stock_take_id, actual_quantity, counted, delta) 
+                    VALUES(:id, :stockTakeId, :acqualQuantity, :counted, :delta)";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->bindParam(':id', $ids[$i]);
+                    $stmt->bindParam(':stockTakeId', $lastInsertedId);
+                    $stmt->bindParam(':acqualQuantity', $quantities[$i]);
+                    $stmt->bindParam(':counted', $counted[$i]);
+                    $stmt->bindParam(':delta', $delta[$i]);
+                    $stmt->execute();
+
+                    $quantity = $quantities[$i];
+                    $id = $ids[$i];
+
+                    //update stock
+                    $this->updateStockLevel($quantity, $id);
+                }
+            }
+            return true;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
+    public function updateStockLevel($quantity, $id)
+    {
+        try {
+            $updateStock = "UPDATE inventory SET quantity = :actualQuantity WHERE id = :id";
+            $smt = $this->db->prepare($updateStock);
+            $smt->bindParam(':actualQuantity', $quantity);
+            $smt->bindParam(':id', $id);
+            $result = $smt->execute();
+            if ($result) {
+                // Update successful
+                echo "Quantity updated for ID: " . $id;
+            } else {
+                // Update failed
+                echo "Failed to update quantity for ID: " . $id;
+            }
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    }

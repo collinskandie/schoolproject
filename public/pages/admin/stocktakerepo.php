@@ -13,29 +13,6 @@ if (!empty($ids) && !empty($countedValues) && count($ids) === count($countedValu
     $stmt = $pdo->prepare("SELECT quantity FROM inventory WHERE id IN ($idPlaceholders)");
     $stmt->execute($ids);
     $actualQuantities = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-
-    // echo '<table>';
-    // echo '<thead>';
-    // echo '<tr>';
-    // echo '<th>ID</th>';
-    // echo '<th>Actual</th>'; // Added column header
-    // echo '<th>Counted</th>';
-    // echo '<th>Delta</th>'; // Added column header
-    // echo '</tr>';
-    // echo '</thead>';
-    // echo '<tbody>';
-
-    // for ($i = 0; $i < count($ids); $i++) {
-    //     echo '<tr>';
-    //     echo '<td>' . $ids[$i] . '</td>';
-    //     echo '<td>' . $names[$i] . '</td>';
-    //     echo '<td>' . $actualQuantities[$i] . '</td>';
-    //     echo '<td>' . $countedValues[$i] . '</td>';
-    //     $delta = $actualQuantities[$i] - $countedValues[$i];
-    //     echo '<td>' . $delta . '</td>'; // Added delta column
-    //     echo '</tr>';
-    // }
 }
 ?>
 
@@ -92,7 +69,7 @@ if (!empty($ids) && !empty($countedValues) && count($ids) === count($countedValu
     <h1> <?php echo date('Y-m-d'); ?></h1>
     <!-- <p>User: John Doe</p> -->
 
-    <form action="stocktakerepo.php" method="post">
+    <form action="stocksavereport.php" method="POST">
         <table>
             <thead>
                 <tr>
@@ -106,19 +83,22 @@ if (!empty($ids) && !empty($countedValues) && count($ids) === count($countedValu
             <tbody>
                 <?php
                 for ($i = 0; $i < count($ids); $i++) {
-                    echo '<tr>';
-                    echo '<td>' . $ids[$i] . '</td>';
-                    echo '<td>' . $names[$i] . '</td>';
-                    echo '<td>' . $actualQuantities[$i] . '</td>';
-                    echo '<td>' . $countedValues[$i] . '</td>';
+                ?>
+                    <td><input name="id[]" value="<?= $ids[$i] ?>" style="border: none; background-color: transparent;" readonly></td>
+                    <td><input name="name[]" value="<?= $names[$i] ?>" style="border: none; background-color: transparent;" readonly></td>
+                    <td><input name="quantities[]" value="<?= $actualQuantities[$i] ?>" style="border: none; background-color: transparent;" readonly></td>
+                    <td><input name="counted[]" value="<?= $countedValues[$i] ?>" style="border: none; background-color: transparent;" readonly></td>
+                    <?php
                     $delta = $countedValues[$i] - $actualQuantities[$i];
-                    echo '<td>' . $delta . '</td>'; // Added delta column
-                    echo '</tr>';
+                    ?>
+                    <td> <input name="delta[]" value="<?= $delta ?>" style="border: none; background-color: transparent;" readonly> </td>
+                    </tr>
+                <?php
                 }
                 ?>
             </tbody>
         </table>
-        <button type="submit">Submit</button>
+        <button type=" submit">Submit</button>
         <br>
         <a class="button" href="./stocktake.php">Recount</a>
     </form>
