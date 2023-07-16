@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <td>
                         <button onclick="window.location.href='./editinventoey.php?id=<?= $row['id']; ?>'" class="button">Edit</button>
-                        <button onclick="window.location.href='./deleteinventory.php?id=<?= $row['id']; ?>'" class="button">Delete</button>
+                        <!-- <button onclick="window.location.href='./deleteinventory.php?id=<?= $row['id']; ?>'" class="button">Delete</button> -->
                     </td>
 
                     </tr>

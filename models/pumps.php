@@ -159,6 +159,19 @@ class pumps
             return false;
         }
     }
+    public function inventoryAll()
+    {
+        try {
+            $sql = "SELECT * FROM inventory";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all rows
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
     // add new inventory item
     public function addInventory($name, $cost, $price, $quantity, $received_by, $fuel_type)
     {
@@ -199,11 +212,10 @@ class pumps
     }
     //edit inventory
 
-    public function editInventpry($id, $name, $cost, $price, $quantity)
+    public function editInventory($id, $name, $cost, $price, $quantity)
     {
         try {
-            //
-            $sql = "UPDATE inventory SET name = :details, cost= :cost, price= :price, quantity= :quantity WHERE id=:id";
+            $sql = "UPDATE inventory SET name = :name, cost = :cost, price = :price, quantity = :quantity WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':name', $name);
             $stmt->bindParam(':cost', $cost);
@@ -211,6 +223,25 @@ class pumps
             $stmt->bindParam(':quantity', $quantity);
             $stmt->bindParam(':id', $id);
             $result = $stmt->execute();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function deleteInventory($id)
+    {
+        try {
+            // Remove the association between sales and the user being deleted
+            $sql = "UPDATE sales SET item_id = NULL WHERE item_id = :id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $sql = "DELETE FROM inventory where id=:id";
+            $smt = $this->db->prepare($sql);
+            $smt->bindparam(':id', $id);
+            $result = $smt->execute();
             return $result;
         } catch (PDOException $error) {
             echo $error->getmessage();

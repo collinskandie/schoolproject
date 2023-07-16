@@ -7,9 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cost = $_POST['cost'];
     $price = $_POST['price'];
     $quantity = $_POST['quantity'];
+    $id = $_POST['id'];
 
     //logs data
-    $id = $_POST['id'];
+
     $action = "edit inventory $name";
     $date = date('Y-m-d');
     $time = date('H:i:s');
@@ -20,7 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $users->logAction($action, $user, $date, $time, $category, $actionTable, $role);
 
-    $pumps->editPump($id, $details);
+    $results = $pumps->editInventory($id, $name, $cost, $price, $quantity);
+    if ($results) {
+        echo ("<script>alert('$name edited successfully');</script>");
+    } else {
+        echo ("<script>alert('error');</script>");
+    }
 }
 $id = $_GET['id'];
 $result = $pumps->getInventory($id);
@@ -79,11 +85,11 @@ $result = $pumps->getInventory($id);
     </div>
     <div>
         <label for="email">Quantity</label>
-        <input type="text" id="price" name="price" value="<?= $result['quantity']; ?>">
+        <input type="text" id="price" name="quantity" value="<?= $result['quantity']; ?>">
     </div>
     <div>
         <label for="phone">Update at</label>
-        <input type="text" id="phone" name="phone" value="<?= $result['last_received']; ?>" readonly>
+        <input type="date" id="phone" name="last_received" value="<?= $result['last_received']; ?>" readonly>
     </div>
     <br>
     <br>
