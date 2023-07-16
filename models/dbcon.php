@@ -2,7 +2,7 @@
 // Database connection settings
 $servername = "localhost";
 $username = "root";
-$password = "Collin@Admin";
+$password = "";
 $dbname = "kerarpon";
 $charset = 'utf8mb4';
 $newConn = "mysql:host=$servername;dbname=$dbname;charset=$charset";

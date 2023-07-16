@@ -51,8 +51,20 @@ include('master.php');
 </style>
 <div class="container">
     <h1>Welcome, <?= $name ?>!</h1>
+
     <div class="options-container">
         <a href="make-sale.php" class="option">Make a Sale</a>
         <a href="cash-out.php" class="option">Cash-out</a>
     </div>
+    <script>
+        // Check if there's a success message in the URL and display it as a JavaScript alert
+        <?php if (isset($_GET['success_message'])) : ?>
+            var success_message = "<?php echo $_GET['success_message']; ?>";
+            alert(success_message);
+        <?php endif; ?>
+        <?php if (isset($_GET['error_message'])) : ?>
+            var error_message = "<?php echo $_GET['error_message']; ?>";
+            alert(error_message);
+        <?php endif; ?>
+    </script>
 </div>
