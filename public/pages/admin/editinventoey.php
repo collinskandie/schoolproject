@@ -3,14 +3,18 @@ $pagename = "Admin - Edit Inventory";
 include('./adminmaster.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $details = $_POST['details'];
-    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $cost = $_POST['cost'];
+    $price = $_POST['price'];
+    $quantity = $_POST['quantity'];
 
-    $action = "edit pump $details";
+    //logs data
+    $id = $_POST['id'];
+    $action = "edit inventory $name";
     $date = date('Y-m-d');
     $time = date('H:i:s');
-    $category = "pumps";
-    $actionTable =  "pumps";
+    $category = "inventory";
+    $actionTable =  "inventory";
     $user = $_SESSION['id'];
     $role = $_SESSION['role'];
 
@@ -19,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $pumps->editPump($id, $details);
 }
 $id = $_GET['id'];
-$result = $pumps->getPumpbyId($id);
+$result = $pumps->getInventory($id);
 ?>
 <style>
     form {
@@ -57,16 +61,29 @@ $result = $pumps->getPumpbyId($id);
 
 <form action="" method="POST">
     <div>
-        <label for="username">Pump ID</label>
+        <label for="id">ID</label>
         <input type="text" id="details" name="id" value="<?= $result['id']; ?>" readonly>
     </div>
+    <!-- id, name, cost, price, quantity, last_sold, last_received, last_updated, updated_by, received_by, fuel_type -->
     <div>
-        <label for="email">Pump Details:</label>
-        <input type="text" id="details" name="details" value="<?= $result['pump_details']; ?>">
+        <label for="email">Description</label>
+        <input type="text" id="name" name="name" value="<?= $result['name']; ?>">
+    </div>
+    <div>
+        <label for="email">Cost</label>
+        <input type="text" id="cost" name="cost" value="<?= $result['cost']; ?>">
+    </div>
+    <div>
+        <label for="email">Price</label>
+        <input type="text" id="price" name="price" value="<?= $result['price']; ?>">
+    </div>
+    <div>
+        <label for="email">Quantity</label>
+        <input type="text" id="price" name="price" value="<?= $result['quantity']; ?>">
     </div>
     <div>
         <label for="phone">Update at</label>
-        <input type="text" id="phone" name="phone" value="<?= $result['updated_at']; ?>" readonly>
+        <input type="text" id="phone" name="phone" value="<?= $result['last_received']; ?>" readonly>
     </div>
     <br>
     <br>

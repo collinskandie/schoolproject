@@ -181,4 +181,40 @@ class pumps
             return false;
         }
     }
+    // get inventory item by id 
+    public function getInventory($id)
+    {
+        try {
+            //
+            $sql = "SELECT * FROM inventory where id=:id";
+            $smt = $this->db->prepare($sql);
+            $smt->bindparam(':id', $id);
+            $smt->execute();
+            $result = $smt->fetch();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
+    //edit inventory
+
+    public function editInventpry($id, $name, $cost, $price, $quantity)
+    {
+        try {
+            //
+            $sql = "UPDATE inventory SET name = :details, cost= :cost, price= :price, quantity= :quantity WHERE id=:id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':name', $name);
+            $stmt->bindParam(':cost', $cost);
+            $stmt->bindParam(':price', $price);
+            $stmt->bindParam(':quantity', $quantity);
+            $stmt->bindParam(':id', $id);
+            $result = $stmt->execute();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getmessage();
+            return false;
+        }
+    }
 }
