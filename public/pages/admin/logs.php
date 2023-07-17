@@ -3,7 +3,7 @@ $pagename = "Admin - User logs";
 include('./adminmaster.php');
 
 $results = $users->getLogs();
-// $result = $users->getUserByEmail($userEmail);
+$users = $users->getAllUsers();
 ?>
 <style>
     table {
@@ -33,12 +33,28 @@ $results = $users->getLogs();
         border: none;
         cursor: pointer;
     }
+
+    input,
+    select {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
 </style>
 <main>
+    <h2>User logs</h2>
+    <p>Records of user activities</p>
+    <br>
+    <div class="filters">
+        <label for="date">Filter by Date:</label>
+        <input type="date" id="date" oninput="filterPIdate()">
+        <br><br>
+    </div>
 
     <table>
-        <thead>
-            <!-- id, actions, actionby, actiondate, actiontime, category, actiontable, user_role -->
+        <thead id="attendant-table">
             <tr>
                 <th>ID</th>
                 <th>Action</th>
@@ -50,31 +66,44 @@ $results = $users->getLogs();
                 <th>Role</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="attendant-table-body">
             <?php
-            // id, actions, actionby, actiondate, actiontime, category, actiontable, user_role
             if (count($results) > 0) {
                 foreach ($results as $row) {
-                    echo "<tr>
-                    <td>" . $row["id"] . "</td>
-                    <td>" . $row["actions"] . "</td>
-                    <td>" . $row["actionby"] . "</td>
-                    <td>" . $row["actiondate"] . "</td>                    
-                    <td>" . $row["actiontime"] . "</td>                    
-                    <td>" . $row["category"] . "</td>
-                    <td>" . $row["actiontable"] . "</td>
-                    <td>" . $row["user_role"] . "</td>
-                    ";
-            ?>
-                    </tr>
-            <?php
+                    echo "<tr>"; // Add this line
+                    echo "<td>" . $row["id"] . "</td>";
+                    echo "<td>" . $row["actions"] . "</td>";
+                    echo "<td>" . $row["actionby"] . "</td>";
+                    echo "<td>" . $row["actiondate"] . "</td>";
+                    echo "<td>" . $row["actiontime"] . "</td>";
+                    echo "<td>" . $row["category"] . "</td>";
+                    echo "<td>" . $row["actiontable"] . "</td>";
+                    echo "<td>" . $row["user_role"] . "</td>";
+                    echo "</tr>"; // Add this line
                 }
             } else {
                 echo "<tr>
-                <td colspan='4'>No bookings found.</td>
+                    <td colspan='8'>No bookings found.</td>
                 </tr>";
             }
             ?>
         </tbody>
     </table>
+    <script>
+        function filterPIdate() {
+            var selectedDate = document.getElementById("date").value;
+            var tableRows = document.querySelectorAll("#attendant-table-body tr");
+
+            Array.from(tableRows).forEach(function(row) {
+                var dateCell = row.querySelector("td:nth-child(4)");
+                var dataDate = dateCell.textContent.trim();
+
+                if (dataDate === selectedDate) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
 </main>

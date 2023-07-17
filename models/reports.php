@@ -116,4 +116,28 @@ class reports
             return false;
         }
     }
+    public function getAttendants()
+    {
+        try {
+            $sql = "SELECT u.id, u.username, SUM(s.total) AS total_sales FROM users u LEFT JOIN sales s ON u.id = s.salesperson_id GROUP BY u.id, u.username ORDER BY total_sales DESC;";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function getAdjustment()
+    {
+        try {
+            $sql = "SELECT s.*, u.username FROM stock_take s JOIN users u on s.user =u.id ORDER BY time ASC";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
 }

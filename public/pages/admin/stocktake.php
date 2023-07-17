@@ -51,7 +51,7 @@ include('./adminmaster.php');
 </style>
 <div class="container">
     <h1>Stock Taking</h1>
-    <h1> <?php echo date('Y-m-d'); ?></h1>
+    <h1>Date: <?php echo date('Y-m-d'); ?></h1>
     <!-- <p>User: John Doe</p> -->
 
     <form action="stocktakerepo.php" method="post">

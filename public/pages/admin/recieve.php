@@ -74,11 +74,11 @@ include('./adminmaster.php');
 <div class="form-container">
     <h1>Receiving Fuel Form</h1>
 
-    <form action="receiveFuel.php" method="POST">
+    <form action="receiveFuel.php" method="POST" onsubmit="return validateForm()">
         <div class="form-header">
             <div class="form-group">
                 <label for="supplier">Supplier:</label>
-                <input type="text" id="supplier" name="supplier" placeholder="Enter  Supplier name">
+                <input type="text" id="supplier" name="supplier" placeholder="Enter Supplier name">
             </div>
 
             <div class="form-group">
@@ -90,75 +90,98 @@ include('./adminmaster.php');
                 <label for="driver-name">Driver Name:</label>
                 <input type="text" id="driver-name" name="driver-name" placeholder="Enter Driver Name">
             </div>
+            <table class="table-form" id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity (Litres)</th>
+                        <th>Cost (per Litre)</th>
+                        <th>Sub-Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableBody">
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <select name="item[]" class="item-select" placeholder="Select Item">
+                                    <option value="">Select Item</option>
+                                    <?php
+                                    $result = $pumps->fetchItems();
+                                    foreach ($result as $row) {
+                                    ?>
+                                        <option value="<?= $row['id'] ?>" data-cost="<?= $row['cost']; ?>"><?= $row['name']; ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="number" name="quantity[]" min="0" step="0.01" value="1" placeholder="Enter Quantity">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="number" name="cost[]" min="0" step="0.01" value="0" placeholder="Item Cost">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="number" name="sub-total[]" min="0" step="0.01" value="0" placeholder="Total" readonly>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="remove-row button">Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td class="total-amount" colspan="2">Total: Ksh 0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="add-row-button">
+                <button type="button" id="addRowButton" class="button">Add Row</button>
+            </div>
 
-        </div>
-
-
-        <table class="table-form" id="itemsTable">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity (Litres)</th>
-                    <th>Cost (per Litre)</th>
-                    <th>Sub-Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="itemsTableBody">
-                <tr>
-                    <td>
-                        <div class="form-group">
-                            <select name="item[]" class="item-select" placeholder="Select Item">
-                                <option value="">Select Item</option>
-                                <?php
-                                $result = $pumps->fetchItems();
-                                foreach ($result as $row) {
-                                ?>
-                                    <option value="<?= $row['id'] ?>" data-cost="<?= $row['cost']; ?>"><?= $row['name']; ?></option>
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input type="number" name="quantity[]" min="0" step="0.01" value="1" placeholder="Enter Quantity">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input type="number" name="cost[]" min="0" step="0.01" value="0" placeholder="Item Cost">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input type="number" name="sub-total[]" min="0" step="0.01" value="0" placeholder="Total" readonly>
-                        </div>
-                    </td>
-                    <td>
-                        <button type="button" class="remove-row button">Remove</button>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3"></td>
-                    <td class="total-amount" colspan="2">Total: Ksh 0.00</td>
-                </tr>
-            </tfoot>
-        </table>
-        <div class="add-row-button">
-            <button type="button" id="addRowButton" class="button">Add Row</button>
-        </div>
-
-        <div class="submit-button">
-            <input type="submit" value="Submit">
-        </div>
+            <div class="submit-button">
+                <input type="submit" value="Submit">
+            </div>
     </form>
 </div>
 
 <script>
+    function validateForm() {
+        // Get the values of the input fields
+        var supplierInput = document.getElementById("supplier").value;
+        var vehicleTypeInput = document.getElementById("vehicle-type").value;
+        var driverNameInput = document.getElementById("driver-name").value;
+
+        // Check if the supplier field is blank
+        if (supplierInput.trim() === "") {
+            alert("Supplier name cannot be blank");
+            return false; // Prevent form submission
+        }
+
+        // Check if the vehicle type field is blank
+        if (vehicleTypeInput.trim() === "") {
+            alert("Vehicle type cannot be blank");
+            return false; // Prevent form submission
+        }
+
+        // Check if the driver name field is blank
+        if (driverNameInput.trim() === "") {
+            alert("Driver name cannot be blank");
+            return false; // Prevent form submission
+        }
+
+        // If all validations pass, allow the form submission
+        return true;
+    }
     // Get all the item select elements
     const itemSelects = document.querySelectorAll('.item-select');
 

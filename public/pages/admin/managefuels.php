@@ -92,26 +92,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </style>
 <main>
     <br>
-    <form action="" method="POST">
+    <form action="" method="POST" onsubmit="return validateForm()">
         <div>
-            <label for="username">Name</label>
-            <input type="text" id="name" name="inventory_name" required>
+            <label for="name">Name</label>
+            <input type="text" id="inventory_name" name="inventory_name">
         </div>
         <div>
             <label for="email">Cost</label>
-            <input type="number" id="cost" name="cost" required>
+            <input type="text" id="cost" name="cost">
         </div>
         <div>
             <label for="quantity">Quantity</label>
-            <input type="number" id="quantity" name="quantity" required>
+            <input type="text" id="quantity" name="quantity">
         </div>
         <div>
             <label for="price">Price</label>
-            <input type="number" id="price" name="price" required>
+            <input type="text" id="price" name="price">
         </div>
         <div>
             <label for="fuel_type">Fuel Type:</label>
-            <select id="fuel_type" name="fuel_type" required>
+            <select id="fuel_type" name="fuel_type">
                 <option value="">Select Fuel type</option>
                 <?php
                 $options = $pumps->fuelTypeslist();
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
     <hr>
     <table>
-        <thead>           
+        <thead>
             <tr>
                 <th>Item ID</th>
                 <th>Name</th>
@@ -171,4 +171,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
         </tbody>
     </table>
+    <script>
+        function validateForm() {
+            var inventory_name = document.getElementById("inventory_name").value;
+            var costInput = document.getElementById("cost").value;
+            var quantityInput = document.getElementById("quantity").value;
+            var priceInput = document.getElementById("price").value;
+            var fuel_type = document.getElementById("fuel_type").value;
+            if (inventory_name === "") {
+                alert("Please enter fuel name.");
+                return false;
+            }
+            if (costInput === "" || isNaN(parseFloat(costInput)) || parseFloat(costInput) <= 0) {
+                alert("Fuel cost must be a positive number");
+                return false;
+            }
+
+            if (quantityInput === "" || isNaN(parseFloat(quantityInput)) || parseFloat(quantityInput) <= 0) {
+                alert("Quantity must be a positive number");
+                return false;
+            }
+            if (priceInput === "" || isNaN(parseFloat(priceInput)) || parseFloat(priceInput) <= 0) {
+                alert("Price must be a positive number");
+                return false;
+            }
+            if (fuel_type === "") {
+                alert("Fuel type cannot be blank");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </main>

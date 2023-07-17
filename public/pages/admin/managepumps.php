@@ -79,10 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </style>
 <main>
     <br>
-    <form action="" method="POST">
+    <form action="" method="POST" onsubmit="return validateForm()">
         <div>
             <label for="details">Pump Details</label>
-            <input type="text" id="details" name="details" required>
+            <input type="text" id="details" name="details">
         </div>
         <br>
         <button type="submit" class="button">Save</button>
@@ -122,4 +122,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
         </tbody>
     </table>
+    <script>
+        function validateForm() {
+            var detailsInput = document.getElementById("details").value;
+
+            if (detailsInput === "") {
+                alert("Please enter the pump details.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </main>

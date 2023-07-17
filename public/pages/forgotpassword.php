@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Login Page</title>
+    <title>Forgot Password</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -102,43 +102,83 @@
     require_once("../../models/dbcon.php");
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = $_POST['email'];
-        $password = $_POST['password'];
-        $new_password = md5($password . $email);
-        $result = $users->userLogin($email, $new_password);
+        $result = $users->getUserByEmail($email);
         if (!$result) {
             echo ('<script>
-            alert("Incorrect password or email");
+            alert("user does not exhist");
           </script>');
         } else {
-            $_SESSION['email'] = $email;
-            $_SESSION['id'] = $result['id'];
-            $_SESSION['role'] = $result['role'];
-            if (
-                $result['role'] ==
-                'admin'
-            ) {
-                echo ('<script>
-                alert("Login success,Welcome to admin page");
-              </script>');
-                header("Location: ./admin/index.php");
-            } elseif (
-                $result['role']
-                == 'attendant'
-            ) {
-                echo ('<script>
-                alert("Login success,Welcome");
-              </script>');
-                header("Location: ./attendant/index.php");
-            }
-            $action = "Login";
-            $actionby = $result['id'];
-            $actionDate = date("Y-m-d");
-            $actionTime = date("H:i:s");
-            $category = "Authentication";
+    ?>
+            <div class="container">
+                <div class="form-container">
+                    <div class="logo">
+                        <img src="../../public/static/images/logo.png" alt="Logo" />
+                    </div>
+                    <h2>Recover Account</h2>
+                    <form action="savepassword.php" method="POST" onsubmit="return validateNewForm()">
+                        <div>
+                            <input type="text" id="email" name="email" value="<?= $result['email']; ?>" placeholder="Email" readonly />
+                        </div>
+                        <div>
+                            <input type="password" id="password" name="otp" placeholder="OTP" readonly>
+                            <!-- <span id="passwordError" class="error"></span> -->
+                        </div>
+                        <div>
+                            <input type="password" id="password" name="password" placeholder="New Password">
+                            <br>
+                            <span id="passwordError" class="error"></span>
+                        </div>
+                        <div>
+                            <input type="password" id="new_password" name="new_password" placeholder="Confirm Password">
+                            <br>
+                            <span id="passwordError" class="error"></span>
+                        </div>
+                        <input type="submit" value="Submit" />
+                        <br>
+                        <br>
+                        <a href="./login.php" style="text-decoration: none;">Login</a>
+                    </form>
+                </div>
+                <div class="image-container">
+                </div>
+            </div>
+            <script>
+                function displayError(inputId, errorMessage) {
+                    var errorElement = document.getElementById(inputId + "Error");
+                    errorElement.textContent = errorMessage;
+                }
 
-            $actionTable = "Users";
-            $user_role = $result['role'];
-            $users->logAction($action, $actionby, $actionDate, $actionTime, $category, $actionTable, $user_role);
+                function clearError(inputId) {
+                    var errorElement = document.getElementById(inputId + "Error");
+                    errorElement.textContent = "";
+                }
+
+                function validateNewForm() {
+                    var password = document.getElementById("password").value;
+                    var confirmPassword = document.getElementById("new_password").value;
+
+                    if (password.trim() === "") {
+                        displayError("password", "Please enter a password.");
+                        return false;
+                    } else {
+                        clearError("password");
+                    }
+
+                    if (confirmPassword.trim() === "") {
+                        displayError("confirmPassword", "Please confirm your password.");
+                        return false;
+                    } else if (confirmPassword !== password) {
+                        displayError("confirmPassword", "Passwords do not match.");
+                        return false;
+                    } else {
+                        clearError("confirmPassword");
+                    }
+
+                    return true;
+                }
+            </script>
+    <?php
+
         }
     } ?>
     <div class="container">
@@ -146,7 +186,7 @@
             <div class="logo">
                 <img src="../../public/static/images/logo.png" alt="Logo" />
             </div>
-            <h2>Login</h2>
+            <h2>Recover Account</h2>
             <form action="" method="POST" onsubmit="return validateForm()">
                 <div>
                     <input type="text" id="email" name="email" placeholder="Email" />
@@ -154,11 +194,10 @@
                     <span id="emailError" class="error"></span>
                 </div>
 
-                <input type="password" id="password" name="password" placeholder="Password" required />
-                <input type="submit" value="Login" />
+                <input type="submit" value="Confirm Email" />
                 <br>
                 <br>
-                <a href="./forgotpassword.php">Forgot Password</a>
+                <a href="./login.php">Login</a>
             </form>
         </div>
         <div class="image-container">

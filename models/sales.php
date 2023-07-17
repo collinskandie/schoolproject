@@ -157,15 +157,31 @@ class sales
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':user', $userid);
             $stmt->bindParam(':date_sold', $date);
-            $stmt->execute(); // Execute the query
+            $stmt->execute();
             $result = $stmt->fetchAll();
-            // var_dump($result);
             return $result;
         } catch (PDOException $error) {
             echo $error->getMessage();
             return false;
         }
     }
+    public function salesperLimit($userid)
+    {
+        try {
+            $sql = "SELECT SUM(s.total) AS total_uncleared_sales FROM sales s 
+            LEFT JOIN payments p ON s.id = p.receipt_number 
+            WHERE s.salesperson_id = :user AND p.cleared = 'Pending';";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':user', $userid);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
     public function getSettings()
     {
         try {
@@ -187,6 +203,19 @@ class sales
             $stmt->bindParam(':new_value', $new_value);
             $stmt->bindParam(':id', $id);
             $result = $stmt->execute(); // Execute the query
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function getLimit()
+    {
+        try {
+            $sql = "SELECT * FROM settings where settings_id = 1";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->fetch();
             return $result;
         } catch (PDOException $error) {
             echo $error->getMessage();

@@ -135,6 +135,21 @@ class users
             return false;
         }
     }
+    public function resetPassword($email, $password)
+    {
+        try {
+            $sql = "UPDATE users SET password =:password WHERE email=:email";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
     public function getAllUsers()
     {
         try {

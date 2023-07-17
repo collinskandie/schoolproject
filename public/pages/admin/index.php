@@ -69,8 +69,8 @@ include('./adminmaster.php');
     <h4>Welcome <?= $name ?> </h4>
     <h5>Todays Summary </h5>
     <div class="card-container">
-        <div class="card" style="align-items:center">
-            <div class="card-header" style="width:100%">
+        <div class="card" style="align-items:center;height: 400px;">
+            <div class="card-header" style="width:100%;">
                 Top Pump Today
             </div>
             <br>
@@ -89,7 +89,7 @@ include('./adminmaster.php');
                 <p class="card-text"><?= $pump;  ?></p>
             </div>
         </div>
-        <div class="card" style="width: 280px; align-items:center">
+        <div class="card" style="width: 280px; align-items:center;height: 400px;">
             <?php
             $result = $reports->topAttendant();
             // var_dump($result);
@@ -108,7 +108,7 @@ include('./adminmaster.php');
                 <p class="card-text"><?= $user; ?></p>
             </div>
         </div>
-        <div class="card" style="width: 400px;">
+        <div class="card" style="width: 400px;height: 400px;">
             <div class="card-header">
                 Fuel Tanks Level
             </div>
@@ -150,7 +150,7 @@ include('./adminmaster.php');
             </div>
         </div>
         <!-- <div class="card" style=""> -->
-        <div class="card" style="width: 320px; align-items:center ">
+        <div class="card" style="width: 320px; align-items:center;height: 400px; ">
             <div class="card-header" style="width: 100%;">
                 Total Day's Sales
             </div>

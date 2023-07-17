@@ -1,6 +1,15 @@
 <?php
 $title = "Make a sale";
 include('master.php');
+$userid = $_SESSION['id'];
+
+$uncleared = $sales->salesperLimit($userid);
+$limit = $sales->getLimit();
+$limit = $limit['value'];
+$uncleared = $uncleared['total_uncleared_sales'];
+// echo $uncleared;
+
+
 
 ?>
 <style>
@@ -96,61 +105,76 @@ include('master.php');
 </style>
 <br>
 <?php
-$id = $_GET['pump'];
-$fuel_types = $pumps->fuelTypes();
+if ($uncleared > $limit) {
+    echo ("<script>alert('You have passed the daily limit')</script>");
+    echo ("You have passed the daily limit");
 ?>
-<div class="container">
-    <form action="payment.php" method="POST">
-        <div class="pump-details">
-            <img src="../../static/images/gas.jpg" alt="Gas Pump <?= $id; ?>">
-            <h3>Pump <?= $id; ?> </h3>
-            <input type="number" name="pump" value="<?= $id; ?>" hidden>
-        </div>
-        <div class="form-group">
-            <div class="fuel-type">
-                <label for="fuel-type">Fuel Type:</label>
-                <select type="select" min="0" step="0.01" id="fuel-type" name="fueltype" style="max-width: 1000px;">
-                    <?php
-                    if (count($fuel_types) > 0) {
-                        foreach ($fuel_types as $row) {
-                    ?>
-                            <option value="<?= $row['id']; ?>" data-price="<?= $row['price']; ?>"><?= $row['name']; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
-                </select>
+    <p><a href="./make-sale.php">
+            << Go back</a>
+    </p>
+    <p><a href="./cash-out.php">
+            Cash Out</a>
+    </p>
+<?php
+} else {
+    $id = $_GET['pump'];
+    $fuel_types = $pumps->fuelTypes();
+?>
+    <div class="container">
+        <form action="payment.php" method="POST">
+            <div class="pump-details">
+                <img src="../../static/images/gas.jpg" alt="Gas Pump <?= $id; ?>">
+                <h3>Pump <?= $id; ?> </h3>
+                <input type="number" name="pump" value="<?= $id; ?>" hidden>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="litres">Number of Litres:</label>
-            <input type="number" id="litres" name="quantity" min="0" step="0.01" oninput="calculateTotalPrice()">
-        </div>
+            <div class="form-group">
+                <div class="fuel-type">
+                    <label for="fuel-type">Fuel Type:</label>
+                    <select type="select" min="0" step="0.01" id="fuel-type" name="fueltype" style="max-width: 1000px;">
+                        <?php
+                        if (count($fuel_types) > 0) {
+                            foreach ($fuel_types as $row) {
+                        ?>
+                                <option value="<?= $row['id']; ?>" data-price="<?= $row['price']; ?>"><?= $row['name']; ?></option>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="litres">Number of Litres:</label>
+                <input type="number" id="litres" name="quantity" min="0" step="0.01" oninput="calculateTotalPrice()">
+            </div>
 
-        <div class="form-group">
-            <label for="total-price">Total Price:</label>
-            <input type="number" name="total" id="total-price" min="0" step="0.01" readonly>
-        </div>
+            <div class="form-group">
+                <label for="total-price">Total Price:</label>
+                <input type="number" name="total" id="total-price" min="0" step="0.01" readonly>
+            </div>
 
-        <div class="total-price">
-            <strong>Total Price:</strong> KSH <span id="display-price">0.00</span>
-        </div>
-        <div class="payment-button">
-            <button type="submit" id="payment-button">Make Payment</button>
-        </div>
+            <div class="total-price">
+                <strong>Total Price:</strong> KSH <span id="display-price">0.00</span>
+            </div>
+            <div class="payment-button">
+                <button type="submit" id="payment-button">Make Payment</button>
+            </div>
 
-    </form>
-</div>
-<script>
-    function calculateTotalPrice() {
-        var fuelTypeSelect = document.getElementById("fuel-type");
-        var fuelPrice = parseFloat(fuelTypeSelect.options[fuelTypeSelect.selectedIndex].getAttribute("data-price"));
-        var litres = parseFloat(document.getElementById("litres").value);
+        </form>
+    </div>
+    <script>
+        function calculateTotalPrice() {
+            var fuelTypeSelect = document.getElementById("fuel-type");
+            var fuelPrice = parseFloat(fuelTypeSelect.options[fuelTypeSelect.selectedIndex].getAttribute("data-price"));
+            var litres = parseFloat(document.getElementById("litres").value);
 
-        if (!isNaN(fuelPrice) && !isNaN(litres)) {
-            var totalPrice = fuelPrice * litres;
-            document.getElementById("total-price").value = totalPrice.toFixed(2);
-            document.getElementById("display-price").innerText = totalPrice.toFixed(2);
+            if (!isNaN(fuelPrice) && !isNaN(litres)) {
+                var totalPrice = fuelPrice * litres;
+                document.getElementById("total-price").value = totalPrice.toFixed(2);
+                document.getElementById("display-price").innerText = totalPrice.toFixed(2);
+            }
         }
-    }
-</script>
+    </script>
+<?php
+}
+?>
