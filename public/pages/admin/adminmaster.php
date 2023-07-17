@@ -102,8 +102,8 @@ $userEmail = $_SESSION['email'];
         <a class="but-menu" href="managefuels.php">Manage Fuel</a>
         <a class="but-menu" href="stocktake.php">Stock Take</a>
         <a class="but-menu" href="analytics.php">Analytics</a> <!-- anaalytics with graphs -->
-        <a class="but-menu" href="reports.php">Reports</a> 
-        <!-- <a class="but-menu" href="analytics.php">Analytics</a>  -->
+        <a class="but-menu" href="reports.php">Reports</a>
+        <a class="but-menu" href="settings.php">Settings</a>
         <a class="but-menu" href="logs.php">User Logs</a>
     </div>
 

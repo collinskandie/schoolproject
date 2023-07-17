@@ -108,7 +108,7 @@ include('./adminmaster.php');
         <table id="sales-table">
             <thead>
                 <tr>
-                    <th>Product</th>
+                    <th>Receipt No</th>
                     <th>Date</th>
                     <th>Attendant</th>
                     <th>Quantity</th>

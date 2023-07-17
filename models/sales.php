@@ -166,4 +166,31 @@ class sales
             return false;
         }
     }
+    public function getSettings()
+    {
+        try {
+            $sql = "SELECT * FROM settings";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function updateSettings($id, $new_value)
+    {
+        try {
+            $sql = "UPDATE settings SET value =:new_value WHERE settings_id=:id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':new_value', $new_value);
+            $stmt->bindParam(':id', $id);
+            $result = $stmt->execute(); // Execute the query
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
 }

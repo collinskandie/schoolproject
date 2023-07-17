@@ -73,7 +73,7 @@ $result = $users->getAllUsers();
                 }
             } else {
                 echo "<tr>
-                <td colspan='4'>No bookings found.</td>
+                <td colspan='4'>No user found</td>
                 </tr>";
             }
             ?>

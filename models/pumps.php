@@ -276,9 +276,9 @@ class pumps
                     $stmt->bindParam(':counted', $counted[$i]);
                     $stmt->bindParam(':delta', $delta[$i]);
                     $stmt->execute();
-
-                    $quantity = $quantities[$i];
+                    $quantity =  $counted[$i];
                     $id = $ids[$i];
+                    // $delta = $delta[$i];
 
                     //update stock
                     $this->updateStockLevel($quantity, $id);
@@ -293,12 +293,19 @@ class pumps
     public function updateStockLevel($quantity, $id)
     {
         try {
-            $updateStock = "UPDATE inventory SET quantity = :actualQuantity WHERE id = :id";
+            $updateStock = "UPDATE inventory SET quantity = :quantity WHERE id = :id";
             $smt = $this->db->prepare($updateStock);
-            $smt->bindParam(':actualQuantity', $quantity);
+            $smt->bindParam(':quantity', $quantity);
             $smt->bindParam(':id', $id);
             $result = $smt->execute();
-            if ($result) {                            
+
+            $updateTanks = "UPDATE tanks SET available_quantity = :quantity WHERE fuel_type = :id";
+            $stmt = $this->db->prepare($updateTanks);
+            $stmt->bindParam(':quantity', $quantity);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            if ($result) {
                 echo "Quantity updated for ID: " . $id;
             } else {
                 // Update failed
@@ -309,4 +316,4 @@ class pumps
             return false;
         }
     }
-    }
+}

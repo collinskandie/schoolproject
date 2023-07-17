@@ -1,6 +1,7 @@
 <?php
 $pagename = "Admin - Feedback";
 include('./adminmaster.php');
+
 $role = $_SESSION['role'];
 $id = $_SESSION['id'];
 $ids = $_POST['id'];

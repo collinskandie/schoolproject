@@ -132,7 +132,7 @@ include('./adminmaster.php');
                     ?>
                         <div class="tank-slider">
                             <div class="tank-label">
-                                Tank: <?= $capacity['tank_details'] ?> || <?= $capacity['percentage']; ?>% || <?= $capacity['name']?>
+                                Tank: <?= $capacity['tank_details'] ?> || <?= $capacity['percentage']; ?>% || <?= $capacity['name'] ?>
                             </div>
                             <div class="tank-bar">
                                 <div class="tank-fill <?= $colorClass ?>" style="width: <?= $percentage ?>%;">
@@ -166,7 +166,7 @@ include('./adminmaster.php');
         </div>
     </div>
     <hr>
-    Sales over time
+    Sales over time (line graph)
     <!-- <br> -->
     <div class="graph" style="margin:10px">
         <!-- fetch the data from the db  -->
