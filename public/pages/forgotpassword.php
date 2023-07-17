@@ -120,7 +120,7 @@
                             <input type="text" id="email" name="email" value="<?= $result['email']; ?>" placeholder="Email" readonly />
                         </div>
                         <div>
-                            <input type="password" id="password" name="otp" placeholder="OTP" readonly>
+                            <input type="password" id="otp" name="otp" placeholder="OTP" readonly>
                             <!-- <span id="passwordError" class="error"></span> -->
                         </div>
                         <div>

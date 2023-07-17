@@ -32,6 +32,7 @@ $name = $result['username'];
                 <li>Welcome <?= $name ?></a></li>
                 <li><a href="index.php">Sale</a></li>
                 <li><a href="cash-out.php">Cashout</a></li>
+                <li><a href="profile.php">Profile</a></li>
                 <li><a href="../../../controllers/logout.php">Logout</a></li>
 
             </ul>
@@ -42,7 +43,7 @@ $name = $result['username'];
         <!-- //page content here  -->
         <footer>
             <!-- Your footer content goes here -->
-            <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kandie.</a> All rights reserved.</p>
+            <p>&copy; 2023 <a href="https://collinskandie.com">Collins Kiptoo.</a> All rights reserved.</p>
         </footer>
 </body>
 
