@@ -83,8 +83,31 @@ class reports
         try {
             $currentDate = date('Y-m-d');
             $currentDateTime = date('Y-m-d H:i:s');
-
             $sql = "SELECT time_sold, total FROM sales WHERE date_sold = '$currentDate' AND time_sold <= '$currentDateTime' ORDER BY time_sold ASC";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function allSales()
+    {
+        try {
+            $sql = "SELECT * FROM sales ORDER BY time_sold ASC";
+            $stmt = $this->db->query($sql);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $result;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+    public function allPo()
+    {
+        try {
+            $sql = "SELECT * FROM purchase_orders ORDER BY time ASC";
             $stmt = $this->db->query($sql);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $result;

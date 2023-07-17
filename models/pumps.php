@@ -298,8 +298,7 @@ class pumps
             $smt->bindParam(':actualQuantity', $quantity);
             $smt->bindParam(':id', $id);
             $result = $smt->execute();
-            if ($result) {
-                // Update successful
+            if ($result) {                            
                 echo "Quantity updated for ID: " . $id;
             } else {
                 // Update failed

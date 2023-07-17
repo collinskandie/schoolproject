@@ -1,5 +1,5 @@
-<h2>Sales Report</h2>
-<hr>
+<h2>Purchase Orders</h2>
+<br>
 <div class="filters">
     <label for="date">Filter by Date:</label>
     <input type="date" id="date" oninput="applyFilter()">
@@ -30,12 +30,12 @@
     <table id="sales-table">
         <thead>
             <tr>
-                <th>Product</th>
+                <th>PO number</th>
                 <th>Date</th>
                 <th>Attendant</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>Item Count</th>
+                <th>Total PO Cost</th>
+                <th>Time</th>
             </tr>
             <tr>
 
@@ -43,19 +43,19 @@
         </thead>
         <?php
         // Get sales data
-        $results = $reports->allSales();
+        $results = $reports->allPo()
         ?>
         <tbody id="sales-table-body">
             <?php
             foreach ($results as $sale) {
             ?>
                 <tr>
-                    <td><?= $sale['id']; ?></td>
-                    <td><?= $sale['date_sold']; ?></td>
-                    <td><?= $sale['salesperson_id']; ?></td>
-                    <td><?= $sale['item_quantity']; ?></td>
-                    <td><?= $sale['price']; ?></td>
-                    <td><?= $sale['total']; ?></td>
+                    <td><?= $sale['PO_number']; ?></td>
+                    <td><?= $sale['date']; ?></td>
+                    <td><?= $sale['user']; ?></td>
+                    <td><?= $sale['items_count']; ?></td>
+                    <td><?= $sale['total_cost']; ?></td>
+                    <td><?= $sale['time']; ?></td>
                 </tr>
             <?php
             }
@@ -63,6 +63,7 @@
         </tbody>
     </table>
 </div>
+
 
 <script>
     function applyFilter() {
@@ -116,10 +117,13 @@
         var totalSalesElement = document.getElementById("total-sales-attendant");
         totalSalesElement.textContent = totalSales.toFixed(2); // Adjust decimal places as needed
     }
+
     function applyFilterItem() {
         var selectedItem = document.getElementById("item").value.toLowerCase();
         var tableRows = document.querySelectorAll("#sales-table tbody tr");
+
         var totalSales = 0;
+
         Array.from(tableRows).forEach(function(row) {
             var productCell = row.querySelector("td:nth-child(1)");
             var dataProduct = productCell.textContent.trim().toLowerCase();
@@ -134,9 +138,11 @@
                 row.style.display = "none";
             }
         });
+
         // Display the total sales for the selected item
         var totalSalesElement = document.getElementById("total-sales-item");
         totalSalesElement.textContent = totalSales.toFixed(2); // Adjust decimal places as needed
+
         totalSalesElement = document.getElementById("totalSalesElement");
     }
 </script>
